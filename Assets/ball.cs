@@ -13,6 +13,11 @@ public class ball : MonoBehaviour
         RandomBallDir();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        rigidbody2D.velocity *= 1.05f;
+    }
+
     private void RandomBallDir()
     {
         rigidbody2D.velocity = Vector3.zero;
