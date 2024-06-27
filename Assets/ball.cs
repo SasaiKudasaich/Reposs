@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,10 @@ public class ball : MonoBehaviour
 {
     public Rigidbody2D rigidbody2D;
     public float speed = 6f;
+    public UImanager UImanager;
+    public float LeftPscore=0;
+    public float RightPscore=0;
+    public  static event Action BallReset;
     
     void Start()
     {
@@ -27,14 +32,15 @@ public class ball : MonoBehaviour
 
     private void RandomBallDir()
     {
+        BallReset?.Invoke();
         rigidbody2D.velocity = Vector3.zero;
         rigidbody2D.isKinematic = true;
         transform.position = Vector3.zero;
         rigidbody2D.isKinematic = false;
 
         Vector2 newBallvect = new Vector2();
-        newBallvect.x = Random.Range(-1f, 1f);
-        newBallvect.y = Random.Range(-1f, 1f);
+        newBallvect.x = UnityEngine.Random.Range(-1f, 1f);
+        newBallvect.y = UnityEngine.Random.Range(-1f, 1f);
         rigidbody2D.velocity = newBallvect.normalized * speed;
     }
 
@@ -50,13 +56,20 @@ public class ball : MonoBehaviour
     {
         if (transform.position.x > 0)
         {
-            Debug.Log("Player Left +1");
+
+            RightPscore += 1;
+            UImanager.SetRightPlayerScoreText(RightPscore.ToString());
+
+
         }
         else
         {
-            Debug.Log("Player Right +1");
+            LeftPscore += 1;
+            UImanager.SetLeftPlayerScoreText(LeftPscore.ToString());
+
         }
-        
+
+
         RandomBallDir();
 
     }
